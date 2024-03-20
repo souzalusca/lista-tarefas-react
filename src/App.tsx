@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
+import * as C from './App.styles'
+import { Item }  from './types/item';
+import {ListItem} from './components/ListItem'  
+import { AddArea } from './components/AddArea'
 
-function App() {
+const App = () => {
+  const[list, setList] = useState<Item[]>([
+    {id: 1, name: 'Comprar o pao', done: false},
+    {id: 2, name: 'Comprar o bolo', done: true},
+    {id: 3, name: 'Comprar o ovo', done: true}
+  ]) 
+
+  const handleAdd = (taskName: string) => {
+    let newList = [...list];
+    newList.push({
+      id: list.length + 1,
+      name: taskName,
+      done: false
+    })
+    setList(newList);
+  }
+  // Função para lidar com a alteração do estado done de um item
+  const handleToggleDone = (id: number, done: boolean) => {
+    const newList = list.map(item => {
+      if (item.id === id) {
+        return { ...item, done }; // Atualiza o estado done do item correspondente
+      }
+      return item;
+    });
+    setList(newList); // Atualiza o estado da lista com os novos valores
+  };
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+       <C.Container>
+          <C.Area> 
+            <C.Header>Lista de Tarefas</C.Header> 
+
+             <AddArea onEnter={handleAdd} />
+
+
+             {list.map(item => (
+          <ListItem key={item.id} item={item} onToggleDone={handleToggleDone} />
+        ))}
+
+          </C.Area>
+       </C.Container>
   );
 }
 
-export default App;
+export default App
