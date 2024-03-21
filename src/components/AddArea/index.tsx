@@ -3,6 +3,7 @@ import * as C from './styles'
 
 type Props = {
     onEnter: (taskName: string) => void
+    
 }
 
 export const AddArea = ({ onEnter }:Props) => {
@@ -10,11 +11,13 @@ export const AddArea = ({ onEnter }:Props) => {
 
     const handleKeyUp = (e: KeyboardEvent) => {
         if(e.code === 'Enter' && inputText !== '') 
+
         {
             onEnter(inputText);
             setInputText('');
     }
 }
+
 
 
     return (

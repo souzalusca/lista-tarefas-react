@@ -6,10 +6,12 @@ import { AddArea } from './components/AddArea'
 
 const App = () => {
   const[list, setList] = useState<Item[]>([
-    {id: 1, name: 'Comprar o pao', done: false},
-    {id: 2, name: 'Comprar o bolo', done: true},
-    {id: 3, name: 'Comprar o ovo', done: true}
+    {id: 1, name: 'Academia', done: false},
+    {id: 2, name: 'Estudar', done: false},
+   
   ]) 
+
+  
 
   const handleAdd = (taskName: string) => {
     let newList = [...list];
@@ -20,6 +22,21 @@ const App = () => {
     })
     setList(newList);
   }
+  const handleRemoveTask = (id: number) => {
+    const newList = list.filter(item => item.id !== id);
+    setList(newList);
+
+  }
+  const handleUpdateTask = (id: number, name: string) => {
+    const newList = list.map(item => {
+      if (item.id === id) {
+        return { ...item, name };
+      }
+      return item;
+    });
+    setList(newList);
+  }
+
   // Função para lidar com a alteração do estado done de um item
   const handleToggleDone = (id: number, done: boolean) => {
     const newList = list.map(item => {
@@ -41,7 +58,12 @@ const App = () => {
 
 
              {list.map(item => (
-          <ListItem key={item.id} item={item} onToggleDone={handleToggleDone} />
+          <ListItem 
+          key={item.id} 
+          item={item} 
+          onToggleDone={handleToggleDone}  
+          onRemoveTask={handleRemoveTask}
+          onUpdateTask={handleUpdateTask}/>
         ))}
 
           </C.Area>
