@@ -3,11 +3,12 @@ import * as C from './App.styles'
 import { Item }  from './types/item';
 import {ListItem} from './components/ListItem'  
 import { AddArea } from './components/AddArea'
+import Tempo from './components/tempo';
 
 const App = () => {
   const[list, setList] = useState<Item[]>([
-    {id: 1, name: 'Academia', done: false},
-    {id: 2, name: 'Estudar', done: false},
+    {id: 1, name: 'Academia', done: false , createdAt: new Date().toISOString()},
+    {id: 2, name: 'Estudar', done: false, createdAt: new Date().toISOString()},
    
   ]) 
 
@@ -18,7 +19,8 @@ const App = () => {
     newList.push({
       id: list.length + 1,
       name: taskName,
-      done: false
+      done: false,
+      createdAt: new Date( Date.now()).toISOString(),
     })
     setList(newList);
   }
@@ -30,11 +32,12 @@ const App = () => {
   const handleUpdateTask = (id: number, name: string) => {
     const newList = list.map(item => {
       if (item.id === id) {
-        return { ...item, name };
+        return { ...item, name, updatedAt: new Date().toISOString() };
       }
       return item;
     });
     setList(newList);
+    
   }
 
   // Função para lidar com a alteração do estado done de um item
@@ -52,6 +55,7 @@ const App = () => {
   return (
        <C.Container>
           <C.Area> 
+            <Tempo />
             <C.Header>Lista de Tarefas</C.Header> 
 
              <AddArea onEnter={handleAdd} />

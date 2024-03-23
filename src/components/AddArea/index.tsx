@@ -22,6 +22,7 @@ export const AddArea = ({ onEnter }:Props) => {
 
     return (
             <C.Container>
+
                 <div className="image" onClick={() => onEnter(inputText)}>➕</div>
                 <input 
                     type="text"

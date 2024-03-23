@@ -21,5 +21,16 @@ export const Container = styled.div<ContainerProps>(({ done }) => `
     label {
         color: #CCC;
         text-decoration: ${done ? 'line-through' : 'initial'};
+        padding: 0px 10px;
+    }
+
+    .date {
+        font-size: 12px;
+        color: #CCC;
+        margin-left: auto; /* Para alinhar à direita */
+        margin-right: 10px;
+        font-style: italic;
+        font-weight: bold;
+        text-align: right;
     }
 `);
