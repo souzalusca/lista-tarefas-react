@@ -7,8 +7,7 @@ import Tempo from './components/tempo';
 
 const App = () => {
   const[list, setList] = useState<Item[]>([
-    {id: 1, name: 'Academia', done: false , createdAt: new Date().toISOString()},
-    {id: 2, name: 'Estudar', done: false, createdAt: new Date().toISOString()},
+    
    
   ]) 
 
