@@ -1,0 +1,28 @@
+/* Navbar.css */
+.navbar {
+    background-color: #00000000; /* Cor de fundo do navbar */
+    padding: 10px; /* Espaçamento interno */
+    margin-bottom: 50px;
+    margin-top: 10px;
+  }
+  
+  .navbar-list {
+    list-style-type: none; /* Remove os marcadores de lista */
+    margin: 0; /* Remove as margens padrão */
+    padding: 0; /* Remove o preenchimento padrão */
+  }
+  
+  .navbar-item {
+    display: inline-block; /* Exibir itens em linha */
+    margin-right: 30px; /* Espaçamento entre os itens */
+  }
+  
+  .navbar-link {
+    color: #fff; /* Cor do texto do link */
+    text-decoration: none; /* Remove sublinhado padrão */
+  }
+  
+  .navbar-link:hover {
+    text-decoration: underline; /* Adiciona sublinhado ao passar o mouse */
+  }
+  

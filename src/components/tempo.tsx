@@ -1,4 +1,3 @@
-import { formatDate, dateTimealive } from './utils/function.time';
 import React, { useEffect, useState } from 'react';
 import { TempoContainer } from './tempo.styles';
 

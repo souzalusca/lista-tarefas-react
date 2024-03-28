@@ -19,7 +19,7 @@ export const Container = styled.div<ContainerProps>(({ done }) => `
     }
 
     label {
-        color: #CCC;
+        color: ${done ? 'green' : '#CCC'}; /* Alterando a cor do texto com base no estado 'done' */
         text-decoration: ${done ? 'line-through' : 'initial'};
         padding: 0px 10px;
     }
