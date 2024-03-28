@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import * as C from './App.styles';
 import { Item, TarefasServices } from './services/api/tarefas/TarefasServices';
 import { ListItem } from './components/ListItem';
@@ -30,69 +30,97 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetchData(); // Chama a função fetchData assim que o componente for montado
-  }, []); // O segundo argumento vazio indica que useEffect deve ser executado apenas uma vez, quando o componente é montado
-  
+    fetchData();
+  }, []);
 
-  const handleAdd = (taskName: string) => {
-    return new Promise((resolve, reject) => {
-      setList(prevList => {
-        const newId = prevList.length + 1;
-        const newItem: Item = {
-          id: newId,
-          nomedaTarefa: taskName,
-          estaCompleta: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: '' // Pode ser inicializada com uma string vazia
-        };
-        
-        TarefasServices.create({
-          nomedaTarefa: taskName,
-          estaCompleta: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: '', 
-        }).then(() => {
-          resolve(newItem); // Resolve a promessa com o novo item adicionado
-        }).catch(error => {
-          reject(error); // Rejeita a promessa se ocorrer um erro
-        });
-        
-        return [...prevList, newItem];
+  const handleAdd = async (taskName: string) => {
+    try {
+      const newTaskData = {
+        nomedaTarefa: taskName,
+        estaCompleta: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: '',
+      };
+
+      // Cria a nova tarefa no servidor
+      const result = await TarefasServices.create(newTaskData);
+
+      if (result instanceof ApiException) {
+        alert(result.message);
+        console.error('Erro ao criar tarefa:', result.message);
+        return;
+      }
+
+      // Atualiza o estado da lista com a nova tarefa (incluindo o ID atribuído pelo servidor)
+      setList(prevList => [...prevList, result]);
+    } catch (error) {
+      console.error('Erro ao criar tarefa:', error);
+    }
+  };
+
+  const handleRemoveTask = useCallback((id: number) => {
+    TarefasServices.deleteById(id)
+      .then((result) => {
+        if (result instanceof ApiException) {
+          alert(result.message);
+          console.error('Erro ao apagar tarefa:', result.message);
+        } else {
+          setList(list => list.filter(item => item.id !== id));
+          console.log('Tarefa apagada com sucesso!');
+        }
       });
-    });
-  };
-  
-  const handleRemoveTask = (id: number) => {
-    return new Promise((resolve, reject) => {
-      const newList = list.filter(item => item.id !== id);
-      setList(newList);
-      
-      // Resolvendo a promessa com o ID do item removido
-      resolve(id);
-      
-      // Não há necessidade de tratamento de erro aqui, já que a operação de filtragem é síncrona e não propensa a erros.
-    });
-  };
-  
+  }, []);
 
   const handleUpdateTask = (id: number, name: string) => {
-    const newList = list.map(item => {
-      if (item.id === id) {
-        return { ...item, nomedaTarefa: name, updatedAt: new Date().toISOString() };
-      }
-      return item;
-    });
-    setList(newList);
+    
+    // Cria um objeto temporário com o novo nome da tarefa e a data de atualização
+    const updatedTaskData: Partial<Item> = {
+      nomedaTarefa: name,
+      updatedAt: new Date().toISOString()  // Atualiza a data de atualização para o momento atual
+    };
+  
+    // Encontra a tarefa na lista
+    const taskToUpdate = list.find(item => item.id === id);
+    if (!taskToUpdate) {
+      console.error('Tarefa não encontrada para atualização');
+      return;
+    }
+  
+    // Mescla os dados da tarefa existente com o novo nome da tarefa e a data de atualização
+    const updatedTask: Item = { ...taskToUpdate, ...updatedTaskData };
+  
+    // Chama o serviço para atualizar a tarefa pelo ID
+    TarefasServices.updateById(id, updatedTask)
+      .then(result => {
+        if (result instanceof ApiException) {
+          alert(result.message);
+          console.error('Erro ao atualizar tarefa:', result.message);
+        } else {
+          // Atualiza localmente a lista de tarefas com os novos dados da tarefa
+          setList(list => {
+            const updatedList = list.map(item =>
+              item.id === id ? updatedTask : item
+            );
+            return updatedList;
+          });
+          console.log('Tarefa atualizada com sucesso!');
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar tarefa:', error);
+      });
   };
+  
+  
+  
+  
 
   const handleToggleDone = (id: number, done: boolean) => {
     const tarefaToUpdate = list.find(item => item.id === id);
     if (!tarefaToUpdate) return;
-  
-    // Alterna o estado de 'estaCompleta'
+
     const updatedDoneState = !tarefaToUpdate.estaCompleta;
-  
-    // Atualiza a tarefa no banco de dados
+
     TarefasServices.updateById(id, {
       ...tarefaToUpdate,
       estaCompleta: updatedDoneState,
@@ -115,8 +143,7 @@ const App = () => {
       });
   };
 
-
-     return (
+  return (
     <C.Container>
       <C.Area>
         <Tempo />
