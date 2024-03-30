@@ -18,7 +18,7 @@ const Navbar: React.FC<Props> = ({ toggleTheme }) => {
   // Atualiza o ícone com base no tema sempre que o tema mudar
   useEffect(() => {
     if (theme?.title === 'light') {
-      setIcon(" 🌑"); // Define o ícone do Sol se o tema for light
+      setIcon(" 🌛"); // Define o ícone do Sol se o tema for light
       console.log("Sol");
     } else {
       setIcon("☀️"); // Define o ícone da Lua se o tema for dark
@@ -39,10 +39,11 @@ const Navbar: React.FC<Props> = ({ toggleTheme }) => {
       </NavbarList>
       {/* Renderiza o ícone do Moon ou Sun com base no tema atual */}
       <NavbarItem>
-        <NavbarLink onClick={handleToggleTheme}>
+        <NavbarLink style={{ fontSize: '24px', fontWeight: 'normal', cursor: 'pointer', textDecoration: 'none'  }} onClick={handleToggleTheme}>
+            {icon}
+          </NavbarLink>
           
-          {icon}
-        </NavbarLink>
+        
       </NavbarItem>
     </NavbarContainer>
   );

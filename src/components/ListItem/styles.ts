@@ -6,7 +6,7 @@ type ContainerProps = {
 
 export const Container = styled.div<ContainerProps>(({ done, theme}) => `
     display: flex;
-    background-color: ${theme.colors.primary};
+    background-color: ${ done ? theme.colors.secundary : theme.colors.primary};
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -75,14 +75,15 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
     }
 
     label {
-        color: ${theme.colors.text} !important;
+        color: ${done ? theme.colors.textgreen : theme.colors.text} !important;
+        
         text-decoration: ${done ? 'line-through' : 'initial'};
         padding: 0px 10px;
     }
 
     .date {
         font-size: 11px;
-        color: ${theme.colors.text};
+        color: ${ theme.colors.text};
         margin-left: auto;
         margin-right: 10px;
         font-style: italic;

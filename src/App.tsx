@@ -156,7 +156,7 @@ const App = () => {
           </Routes>
         </div>
 
-        <C.Header>Lista de Tarefas </C.Header>
+        <C.Header>Lista de Tarefas <br /> <br /> </C.Header>
 
         <AddArea onEnter={handleAdd} />
 
