@@ -1,13 +1,15 @@
+// tempo.styles.ts
+
 import styled from 'styled-components';
 
 export const TempoContainer = styled.div`
     position: fixed;
-    top: 10px;
-    right: 10px;
-    font-size: large;
-    font-size: 9px;
-    color: white;
+    top: 20px;
+    right: 20px;
+    color: grey;
     padding: 10px;
     border-radius: 5px;
+    font-family: monospace;
+    font-size: medium; /* Altere o tamanho da fonte conforme necessário */
+    
 `;
-export {};

@@ -14,9 +14,9 @@ export const Container = styled.div`
     }
     input {
         border: 0px;
-        background: transparent;
+        background: ${props => props.theme.colors.background};
         outline: 0;
-        color: #fff;
+        color: ${props => props.theme.colors.text};
         font-size: 18px;
         flex: 1;
     }

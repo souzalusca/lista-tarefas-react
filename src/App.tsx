@@ -6,10 +6,20 @@ import { AddArea } from './components/AddArea';
 import Tempo from './components/tempo';
 import { Route, Routes } from 'react-router-dom';
 import NovaPagina from './NovaPagina';
-import Navbar from './components/utils/navbar';
+import  Navbar  from './components/utils/navbar';
 import { ApiException } from './services/api/ApiException';
+import { ThemeProvider } from 'styled-components'
+import  lightTheme from './styles/themes/light';
+import darkTheme from './styles/themes/dark';
 
 const App = () => {
+  const [theme, setTheme] = useState(lightTheme);
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
+  };
+  
+
   const [list, setList] = useState<Item[]>([]);
 
   const fetchData = async () => {
@@ -42,7 +52,6 @@ const App = () => {
         updatedAt: '',
       };
 
-      // Cria a nova tarefa no servidor
       const result = await TarefasServices.create(newTaskData);
 
       if (result instanceof ApiException) {
@@ -51,7 +60,6 @@ const App = () => {
         return;
       }
 
-      // Atualiza o estado da lista com a nova tarefa (incluindo o ID atribuído pelo servidor)
       setList(prevList => [...prevList, result]);
     } catch (error) {
       console.error('Erro ao criar tarefa:', error);
@@ -72,31 +80,25 @@ const App = () => {
   }, []);
 
   const handleUpdateTask = (id: number, name: string) => {
-    
-    // Cria um objeto temporário com o novo nome da tarefa e a data de atualização
     const updatedTaskData: Partial<Item> = {
       nomedaTarefa: name,
-      updatedAt: new Date().toISOString()  // Atualiza a data de atualização para o momento atual
+      updatedAt: new Date().toISOString()
     };
-  
-    // Encontra a tarefa na lista
+
     const taskToUpdate = list.find(item => item.id === id);
     if (!taskToUpdate) {
       console.error('Tarefa não encontrada para atualização');
       return;
     }
-  
-    // Mescla os dados da tarefa existente com o novo nome da tarefa e a data de atualização
+
     const updatedTask: Item = { ...taskToUpdate, ...updatedTaskData };
-  
-    // Chama o serviço para atualizar a tarefa pelo ID
+
     TarefasServices.updateById(id, updatedTask)
       .then(result => {
         if (result instanceof ApiException) {
           alert(result.message);
           console.error('Erro ao atualizar tarefa:', result.message);
         } else {
-          // Atualiza localmente a lista de tarefas com os novos dados da tarefa
           setList(list => {
             const updatedList = list.map(item =>
               item.id === id ? updatedTask : item
@@ -110,45 +112,45 @@ const App = () => {
         console.error('Erro ao atualizar tarefa:', error);
       });
   };
-  
-  
-  
-  
 
   const handleToggleDone = (id: number, done: boolean) => {
-    const tarefaToUpdate = list.find(item => item.id === id);
-    if (!tarefaToUpdate) return;
+  const tarefaToUpdate = list.find(item => item.id === id);
+  if (!tarefaToUpdate) return;
 
-    const updatedDoneState = !tarefaToUpdate.estaCompleta;
+  const updatedDoneState = !tarefaToUpdate.estaCompleta;
 
-    TarefasServices.updateById(id, {
-      ...tarefaToUpdate,
-      estaCompleta: updatedDoneState,
+  TarefasServices.updateById(id, {
+    ...tarefaToUpdate,
+    estaCompleta: updatedDoneState,
+  })
+    .then(result => {
+      if (result instanceof ApiException) {
+        alert(result.message);
+        console.error('Erro ao atualizar tarefa:', result.message);
+      } else {
+        setList(list => {
+          const updatedList = list.map(item =>
+            item.id === id ? { ...item, estaCompleta: updatedDoneState } : item
+          );
+          return updatedList;
+        });
+      }
     })
-      .then(result => {
-        if (result instanceof ApiException) {
-          alert(result.message);
-          console.error('Erro ao atualizar tarefa:', result.message);
-        } else {
-          setList(list => {
-            const updatedList = list.map(item =>
-              item.id === id ? { ...item, estaCompleta: updatedDoneState } : item
-            );
-            return updatedList;
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Erro ao atualizar tarefa:', error);
-      });
-  };
+    .catch(error => {
+      console.error('Erro ao atualizar tarefa:', error);
+    });
+
+
+  
+};
 
   return (
+   <ThemeProvider theme={theme}>
     <C.Container>
       <C.Area>
         <Tempo />
         <div>
-          <Navbar />
+          <Navbar toggleTheme={toggleTheme}/>
           <Routes>
             <Route path="/nova-pagina" element={<NovaPagina />} />
           </Routes>
@@ -174,6 +176,7 @@ const App = () => {
         )}
       </C.Area>
     </C.Container>
+    </ThemeProvider>
   );
 }
 

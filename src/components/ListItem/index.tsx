@@ -3,6 +3,7 @@ import { Item } from '../../services/api/tarefas/TarefasServices';
 import { format } from 'date-fns';
 import React, { useState } from 'react';
 
+
 type Props = {
     item: Item;
     onToggleDone: (id: number, done: boolean) => void; // Função para lidar com a alteração do estado done
@@ -13,20 +14,16 @@ type Props = {
 export const ListItem = ({ item, onToggleDone, onRemoveTask, onUpdateTask }: Props) => {
     const [completed, setCompleted] = useState(item.estaCompleta);
 
-    const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.checked;
+    const handleSwitchChange = () => {
+        const newValue = !completed;
+        setCompleted(newValue);
         onToggleDone(item.id, newValue);
     }
 
     const handleUpdateTask = () => {
         const newValue = prompt('Insira o novo nome da tarefa:', item.nomedaTarefa) || '';
-        if (newValue !== item.nomedaTarefa)
+        if (newValue !== item.nomedaTarefa && newValue.trim() !== '')
             onUpdateTask(item.id, newValue);
-    }
-
-    const toggleCompleted = () => {
-        setCompleted(!completed);
-        onToggleDone(item.id, !completed);
     }
 
     const renderDate = () => {
@@ -42,17 +39,22 @@ export const ListItem = ({ item, onToggleDone, onRemoveTask, onUpdateTask }: Pro
     return (
         <C.Container done={completed}>
             {/* Utilização do switch para renderizar o emoji correto */}
-            <span role="img" aria-label={completed ? "Concluída" : "Não concluída"} onClick={toggleCompleted}>
-                {completed ? '✅' : '❌'}
-            </span>
+            <label className="switch-list">
+                <input type="checkbox" checked={completed} onChange={handleSwitchChange} />
+                <span className="slider round"></span>
+            </label>
             {/* Renderiza o nome da tarefa com cor condicional */}
-            <label style={{ color: completed ? 'green' : 'red' }}>{item.nomedaTarefa}</label>
+            <label style={{ color: completed ? 'green' : '#ccc' }}>{item.nomedaTarefa}</label>
             {/* Renderiza a data */}
             <span className="date">{renderDate()}</span>
-            {/* Botão para remover a tarefa */}
-            <button onClick={() => onRemoveTask(item.id)}>🗑️</button>
-            {/* Botão para atualizar a tarefa */}
-            <button onClick={handleUpdateTask}>✏️</button>
+            
+            
+            
+
+            <button onClick={handleUpdateTask} type="button" className="btn_editar_tarefa" style={{ fontSize: '11px', padding: '5px 10px', marginRight: '5px'  }}>Alterar</button>
+            <button onClick={() => onRemoveTask(item.id)} type="button" className="btn_excluir_tarefa" style={{ fontSize: '11px', padding: '5px 10px', marginRight: '5px'  }}>Excluir</button>
+            
+            
         </C.Container>
     );
 }

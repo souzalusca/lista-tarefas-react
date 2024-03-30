@@ -1,6 +1,6 @@
 import { useState, KeyboardEvent } from 'react';
 import * as C from './styles';
-
+import { FaPlusCircle } from 'react-icons/fa'; // Importe o ícone de adição
 type Props = {
     onEnter: (taskName: string) => void;
 };
@@ -25,7 +25,6 @@ export const AddArea = ({ onEnter }: Props) => {
     return (
         <C.Container>
             {/* Adiciona uma tarefa ao clicar no emoji roxo */}
-            <div className="image" onClick={handleAddTask}>➕</div>
             <input
                 type="text"
                 placeholder="Adicione uma tarefa"
@@ -33,6 +32,8 @@ export const AddArea = ({ onEnter }: Props) => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyUp={handleKeyUp}
             />
+            {/* Adiciona uma tarefa ao clicar no ícone de adição */}
+            <FaPlusCircle className="add-icon" onClick={handleAddTask} />
         </C.Container>
     );
 };

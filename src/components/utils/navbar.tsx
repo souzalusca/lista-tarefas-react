@@ -1,28 +1,51 @@
-// Navbar.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './navbar.css'; // Importe seu arquivo de estilos CSS
+import React, { useContext, useState, useEffect } from 'react';
+import { NavbarContainer, NavbarList, NavbarItem, NavbarLink } from './navbar.styled';
+import { ThemeContext } from 'styled-components';
 
-const Navbar = () => {
-  return (
-    <nav className="navbar"> {/* Adicione uma classe ao elemento nav */}
-      <ul className="navbar-list"> {/* Adicione uma classe ao elemento ul */}
-        <li className="navbar-item"> {/* Adicione uma classe ao elemento li */}
-          <Link to="/" className="navbar-link">Página Inicial</Link> {/* Adicione uma classe ao elemento Link */}
-        </li>
-        <li className="navbar-item"> {/* Adicione uma classe ao elemento li */}
-          <Link to="/nova-pagina" className="navbar-link">Atualização</Link> {/* Adicione uma classe ao elemento Link */}
-        </li>
-        <li className="navbar-item"> {/* Adicione uma classe ao elemento li */}
-          <Link to="/nova-pagina" className="navbar-link">Remoção</Link> {/* Adicione uma classe ao elemento Link */}
-        </li>
-        <li className="navbar-item"> {/* Adicione uma classe ao elemento li */}
-          <Link to="/nova-pagina" className="navbar-link">Nova Página</Link> {/* Adicione uma classe ao elemento Link */}
-        </li>
-      </ul>
-    </nav>
-  );
+interface Props {
+  toggleTheme(): void;
 }
 
-export default Navbar;
+const Navbar: React.FC<Props> = ({ toggleTheme }) => {
+  const theme = useContext(ThemeContext); // Obtém o tema do contexto
+  const [icon, setIcon] = useState<string>(""); // Estado para o ícone
 
+  // Função para alternar entre os temas light e dark
+  const handleToggleTheme = () => {
+    toggleTheme(); // Chama a função toggleTheme para alternar entre os temas
+  };
+
+  // Atualiza o ícone com base no tema sempre que o tema mudar
+  useEffect(() => {
+    if (theme?.title === 'light') {
+      setIcon(" 🌑"); // Define o ícone do Sol se o tema for light
+      console.log("Sol");
+    } else {
+      setIcon("☀️"); // Define o ícone da Lua se o tema for dark
+      console.log("Lua");
+    }
+  }, [theme]); // Executa sempre que o tema mudar
+
+  return (
+    <NavbarContainer>
+      <NavbarList>
+        <NavbarItem>
+          <NavbarLink href="#">Pagina inicial</NavbarLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavbarLink href="#">Atualizar status</NavbarLink>
+        </NavbarItem>
+        {/* Adicione mais itens conforme necessário */}
+      </NavbarList>
+      {/* Renderiza o ícone do Moon ou Sun com base no tema atual */}
+      <NavbarItem>
+        <NavbarLink onClick={handleToggleTheme}>
+          
+          {icon}
+        </NavbarLink>
+      </NavbarItem>
+    </NavbarContainer>
+  );
+};
+
+export default Navbar;

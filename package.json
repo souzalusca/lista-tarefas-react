@@ -11,11 +11,15 @@
     "@types/react": "^18.2.67",
     "@types/react-dom": "^18.2.22",
     "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
     "date-fns": "^3.6.0",
+    "polished": "^4.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
+    "react-switch": "^7.0.0",
     "styled-components": "^6.1.8",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -25,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "mock": "json-server --watch ./mock/db.json --port 3333"
+    "mock": "json-server --watch ./mock/db.json --port 3333",
+    "clean": "del /q node_modules\\.cache && rmdir /s /q dist"
   },
   "eslintConfig": {
     "extends": [
