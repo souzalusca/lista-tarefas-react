@@ -1,30 +1,39 @@
-import { useState, KeyboardEvent } from 'react';
+import { useState } from 'react';
 import * as C from './styles';
-import { FaPlusCircle } from 'react-icons/fa'; // Importe o ícone de adição
+import { FaCircle } from 'react-icons/fa';
+import { Modal } from '../Modal';
+
 type Props = {
     onEnter: (taskName: string) => void;
 };
 
 export const AddArea = ({ onEnter }: Props) => {
     const [inputText, setInputText] = useState('');
+    const [openModal, setOpenModal] = useState(false);
 
-    const handleKeyUp = (e: KeyboardEvent) => {
+    const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.code === 'Enter' && inputText.trim() !== '') {
             onEnter(inputText.trim());
             setInputText('');
         }
     };
 
-    const handleAddTask = () => {
-        if (inputText.trim() !== '') {
-            onEnter(inputText.trim());
-            setInputText('');
-        }
+    const handleAddTask = (taskName: string) => {
+        onEnter(taskName);
+        setInputText('');
+        setOpenModal(false); // Fechar a modal após adicionar a tarefa
+    };
+
+    const handleModalClose = () => {
+        setOpenModal(false);
+    };
+
+    const handleModalCancel = () => {
+        setOpenModal(false); // Fechar a modal se o usuário cancelar
     };
 
     return (
         <C.Container>
-            {/* Adiciona uma tarefa ao clicar no emoji roxo */}
             <input
                 type="text"
                 placeholder="Adicione uma tarefa"
@@ -32,8 +41,16 @@ export const AddArea = ({ onEnter }: Props) => {
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyUp={handleKeyUp}
             />
-            {/* Adiciona uma tarefa ao clicar no ícone de adição */}
-            <FaPlusCircle className="add-icon" onClick={handleAddTask} />
+            <FaCircle className="add-icon" onClick={() => setOpenModal(true)} />
+
+            {openModal && (
+                <Modal
+                    isOpen={openModal}
+                    onClose={handleModalClose}
+                    onAddTask={handleAddTask} // Passando a função handleAddTask para a modal
+                    onCancel={handleModalCancel}
+                />
+            )}
         </C.Container>
     );
 };

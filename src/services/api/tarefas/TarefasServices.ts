@@ -7,6 +7,8 @@ export type Item = {
     estaCompleta: boolean;
     createdAt: string;
     updatedAt: string;
+    limitedAt: string;
+    importancia: number;
 };
 
 const getAll = async (): Promise<Item[] | ApiException> => {
@@ -27,7 +29,7 @@ const getById = async (id: number): Promise<Item | ApiException> => {
     }
 };
 
-const create = async (dataToCreate: Omit<Item, 'id'>): Promise<Item | ApiException> => {
+const create = async (dataToCreate: Omit<Item, 'id' | 'updatedAt'  >): Promise<Item | ApiException> => {
     try {
         const { data } = await Api().post('/tarefas', dataToCreate);
         return data;
