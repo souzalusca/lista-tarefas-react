@@ -83,7 +83,7 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
 
     .date {
         font-size: 11px;
-        color: ${ theme.colors.text};
+        color: ${done ? theme.colors.textgreen : theme.colors.text};
         margin-left: auto;
         margin-right: 10px;
         font-style: italic;
@@ -117,7 +117,7 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
     }
     .date-limited {
         font-size: 11px;
-        color: ${theme.colors.text};
+        color: ${done ? theme.colors.textgreen : theme.colors.text};
         padding: 0px 0px 0px 200px ;
         margin-right: 50px;
         font-style: italic;

@@ -10,12 +10,13 @@ import { Route, Routes } from 'react-router-dom';
 import NovaPagina from './NovaPagina';
 import Navbar from './components/utils/navbar';
 import { ApiException } from './services/api/ApiException';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
 import lightTheme from './styles/themes/light';
 import darkTheme from './styles/themes/dark';
+import { usePersistedState } from './components/utils/usePersistedState';
 
 const App = () => {
-  const [theme, setTheme] = useState(lightTheme);
+  const [theme, setTheme] = usePersistedState< DefaultTheme>('theme', lightTheme);
   const [list, setList] = useState<Item[]>([]);
 
   const fetchData = async () => {
