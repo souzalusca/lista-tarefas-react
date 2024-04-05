@@ -11,7 +11,7 @@ declare module 'styled-components' {
             background: string;
             text: string;
             textgreen: string;
-            
+            backgroundModal: string
         },
     }
 

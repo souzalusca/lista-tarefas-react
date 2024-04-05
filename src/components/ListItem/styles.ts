@@ -106,4 +106,33 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
         padding: 6px 10px!important;
         
     }
+    .task {
+        color: ${theme.colors.text};
+        text-decoration: ${done ? 'line-through' : 'initial'};
+        text-align: center;
+        display: flex;
+        flex-grow: 1; /* Ocupa todo o espaço disponível */
+        max-width: calc(100% - 100px); /* Ajuste conforme necessário */
+        overflow: hidden;
+    }
+    .date-limited {
+        font-size: 11px;
+        color: ${theme.colors.text};
+        padding: 0px 0px 0px 200px ;
+        margin-right: 50px;
+        font-style: italic;
+        font-weight: bold;
+        text-align: left;
+        display: flex;
+
+    }
+    .task-importance {
+        margin-left: auto; /* Defina a posição desejada */
+        top: 0;
+        font-size: 11px;
+        color: ${theme.colors.text};
+        font-style: italic;
+        font-weight: bold;
+        text-align: center;
+    }
 `);

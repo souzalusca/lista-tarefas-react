@@ -20,4 +20,14 @@ export const Container = styled.div`
         font-size: 18px;
         flex: 1;
     }
+    .open-modal {
+        color: ${props => props.theme.colors.text};
+        font-size: 18px;
+        cursor: pointer;
+        margin: 0 10px;
+    }
+    .add-icon {
+        color: ${props => props.theme.colors.text};
+        font-size: 18px;
+    }
 `;

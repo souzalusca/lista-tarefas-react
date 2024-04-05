@@ -1,3 +1,5 @@
+// App.tsx
+
 import React, { useState, useEffect, useCallback } from 'react';
 import * as C from './App.styles';
 import { Item, TarefasServices } from './services/api/tarefas/TarefasServices';
@@ -6,19 +8,14 @@ import { AddArea } from './components/AddArea';
 import Tempo from './components/tempo';
 import { Route, Routes } from 'react-router-dom';
 import NovaPagina from './NovaPagina';
-import  Navbar  from './components/utils/navbar';
+import Navbar from './components/utils/navbar';
 import { ApiException } from './services/api/ApiException';
-import { ThemeProvider } from 'styled-components'
-import  lightTheme from './styles/themes/light';
+import { ThemeProvider } from 'styled-components';
+import lightTheme from './styles/themes/light';
 import darkTheme from './styles/themes/dark';
 
 const App = () => {
   const [theme, setTheme] = useState(lightTheme);
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
-  };
-
   const [list, setList] = useState<Item[]>([]);
 
   const fetchData = async () => {
@@ -29,7 +26,6 @@ const App = () => {
         console.error('Erro ao buscar tarefas:', result.message);
       } else if (Array.isArray(result)) {
         setList(result);
-        console.log('Dados retornados pelo servidor:', result);
       } else {
         console.error('Dados inválidos retornados pelo servidor:', result);
       }
@@ -42,15 +38,19 @@ const App = () => {
     fetchData();
   }, []);
 
-  const handleAdd = async (taskName: string) => {
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
+  };
+
+  const handleAdd = async (taskName: string, dueDate: string, importance: string) => {
     try {
       const newTaskData = {
         nomedaTarefa: taskName,
         estaCompleta: false,
         createdAt: new Date().toISOString(),
         updatedAt: '',
-        limitedAt: new Date().toISOString(),
-        importancia: 1 // Correção: defina importancia como número
+        limitedAt: dueDate,
+        importancia: importance.toString() // Definindo importancia como número
       };
   
       const result = await TarefasServices.create(newTaskData);
@@ -157,7 +157,7 @@ const App = () => {
 
           <C.Header>Lista de Tarefas <br /> <br /> </C.Header>
 
-          <AddArea onEnter={handleAdd} />
+          <AddArea onAddTask={handleAdd} />
 
           {list.length > 0 && list.map(item => (
             <ListItem

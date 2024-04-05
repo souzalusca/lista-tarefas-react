@@ -43,9 +43,9 @@ export const ListItem = ({ item, onToggleDone, onRemoveTask, onUpdateTask }: Pro
                 <input type="checkbox" checked={completed} onChange={handleSwitchChange} />
                 <span className="slider round"></span>
             </label>
-            <label style={{ color: completed ? 'green' : '#ccc' }}>{item.nomedaTarefa}</label>
-            <label className="">{item.importancia}</label>
-            <span> Data Limite: {formattedLimitedAt}</span>
+            <label className='task' style={{ color: completed ? 'green' : '#ccc' }}>{item.nomedaTarefa}</label>
+            <label className="task-importance">{item.importancia}</label>
+            <span className='date-limited' > Data Limite: {formattedLimitedAt}</span>
             <span className="date">{renderDate()}</span>
             
             <button onClick={handleUpdateTask} type="button" className="btn_editar_tarefa" style={{ fontSize: '11px', padding: '5px 10px', marginRight: '5px' }}>Alterar</button>

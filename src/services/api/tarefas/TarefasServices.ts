@@ -8,7 +8,7 @@ export type Item = {
     createdAt: string;
     updatedAt: string;
     limitedAt: string;
-    importancia: number;
+    importancia: string;
 };
 
 const getAll = async (): Promise<Item[] | ApiException> => {

@@ -5,7 +5,8 @@ const darkTheme = {
         secundary: '#add6c4',
         background: '#17171f',
         text: '#fff',
-        textgreen: '#000'
+        textgreen: '#000',
+        backgroundModal: '#1a1a27'
     },
 };
 

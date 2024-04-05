@@ -5,7 +5,8 @@ const lightTheme = {
         secundary: '#add6c4',
         background: '#f5f5f5',
         text: '#000',
-        textgreen: '#000'
+        textgreen: '#000',
+        backgroundModal: '#fff'
     },
 };
 

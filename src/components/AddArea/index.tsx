@@ -1,58 +1,32 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import * as C from './styles';
-import { FaCircle } from 'react-icons/fa';
+import { FaCircle, FaGgCircle, FaPlusCircle } from 'react-icons/fa';
 import { Modal } from '../Modal';
+import { Item } from '../../services/api/tarefas/TarefasServices';
 
 type Props = {
-    onEnter: (taskName: string) => void;
+  onAddTask: (taskName: string, dueDate: string, importance: string) => void;
 };
 
-export const AddArea = ({ onEnter }: Props) => {
-    const [inputText, setInputText] = useState('');
-    const [openModal, setOpenModal] = useState(false);
+export const AddArea = ({ onAddTask }: Props) => {
+  const [openModal, setOpenModal] = useState(false);
 
-    const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.code === 'Enter' && inputText.trim() !== '') {
-            onEnter(inputText.trim());
-            setInputText('');
-        }
-    };
+  const handleModalClose = () => {
+    setOpenModal(false);
+  };
 
-    const handleAddTask = (taskName: string) => {
-        onEnter(taskName);
-        setInputText('');
-        setOpenModal(false); // Fechar a modal após adicionar a tarefa
-    };
+  return (
+    <C.Container>
+      <FaPlusCircle className="add-icon" onClick={() => setOpenModal(true)} />
+        <p className='open-modal' onClick={() => setOpenModal(true)}>Clique aqui para adicionar uma tarefa</p>
 
-    const handleModalClose = () => {
-        setOpenModal(false);
-    };
-
-    const handleModalCancel = () => {
-        setOpenModal(false); // Fechar a modal se o usuário cancelar
-    };
-
-    return (
-        <C.Container>
-            <input
-                type="text"
-                placeholder="Adicione uma tarefa"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyUp={handleKeyUp}
-            />
-            <FaCircle className="add-icon" onClick={() => setOpenModal(true)} />
-
-            {openModal && (
-                <Modal
-                    isOpen={openModal}
-                    onClose={handleModalClose}
-                    onAddTask={handleAddTask} // Passando a função handleAddTask para a modal
-                    onCancel={handleModalCancel}
-                />
-            )}
-        </C.Container>
-    );
+      {openModal && (
+        <Modal
+          isOpen={openModal}
+          onClose={handleModalClose}
+          onAddTask={onAddTask}
+        />
+      )}
+    </C.Container>
+  );
 };
-
-export default AddArea;
