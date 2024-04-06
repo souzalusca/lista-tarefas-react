@@ -106,6 +106,14 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
         padding: 6px 10px!important;
         
     }
+    .btn-gerar-pdf{
+        background: #fdc200;
+        border: none;
+        border-radius: 4px;
+        padding: 6px 10px!important;
+        font-size: 11px;
+        
+    }
     .task {
         color: ${theme.colors.text};
         text-decoration: ${done ? 'line-through' : 'initial'};
@@ -135,4 +143,5 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
         font-weight: bold;
         text-align: center;
     }
+ 
 `);

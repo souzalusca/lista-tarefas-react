@@ -1,45 +1,9 @@
 {
   "tarefas": [
     {
-      "id": "b47d",
-      "nomedaTarefa": "Comprar Pão",
-      "estaCompleta": true,
-      "createdAt": "2024-04-05T01:16:24.630Z",
-      "updatedAt": "",
-      "limitedAt": "2024-05-05",
-      "importancia": "Nao importante"
-    },
-    {
-      "id": "96ce",
-      "nomedaTarefa": "Lamber a gloria",
-      "estaCompleta": false,
-      "createdAt": "2024-04-05T01:16:47.967Z",
-      "updatedAt": "",
-      "limitedAt": "2024-04-06",
-      "importancia": "Muito importante"
-    },
-    {
-      "id": "7aa9",
-      "nomedaTarefa": "wqeqwr",
-      "estaCompleta": false,
-      "createdAt": "2024-04-05T03:29:14.714Z",
-      "updatedAt": "",
-      "limitedAt": "1314-12-12",
-      "importancia": "Importante"
-    },
-    {
-      "id": "6dc8",
-      "nomedaTarefa": "qewreqwrqwrqrw",
-      "estaCompleta": false,
-      "createdAt": "2024-04-05T03:29:26.527Z",
-      "updatedAt": "",
-      "limitedAt": "14143-12-12",
-      "importancia": "Muito importante"
-    },
-    {
       "id": "e4c7",
       "nomedaTarefa": "231",
-      "estaCompleta": false,
+      "estaCompleta": true,
       "createdAt": "2024-04-05T03:30:43.755Z",
       "updatedAt": "",
       "limitedAt": "1321-03-12",
@@ -48,7 +12,7 @@
     {
       "id": "cb3c",
       "nomedaTarefa": "COMER O GUGA",
-      "estaCompleta": false,
+      "estaCompleta": true,
       "createdAt": "2024-04-05T17:34:40.283Z",
       "updatedAt": "",
       "limitedAt": "2212-11-12",
@@ -66,11 +30,20 @@
     {
       "id": "d321",
       "nomedaTarefa": "COMER O GUGA",
-      "estaCompleta": false,
+      "estaCompleta": true,
       "createdAt": "2024-04-05T17:35:12.555Z",
       "updatedAt": "",
       "limitedAt": "31314-03-21",
       "importancia": "Nao importante"
+    },
+    {
+      "id": "2e7b",
+      "nomedaTarefa": "Aniversario do lucas",
+      "estaCompleta": false,
+      "createdAt": "2024-04-06T07:13:00.887Z",
+      "updatedAt": "",
+      "limitedAt": "2000-11-12",
+      "importancia": "Importante"
     }
   ]
 }

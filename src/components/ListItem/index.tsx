@@ -1,7 +1,8 @@
 import * as C from './styles';
 import { Item } from '../../services/api/tarefas/TarefasServices';
-import { format, isValid } from 'date-fns'; // Importe a função isValid
+import { format, isValid } from 'date-fns';
 import React, { useState } from 'react';
+import tarefasPDF from '../ListPdf/tarefas'
 
 type Props = {
     item: Item;
@@ -10,7 +11,7 @@ type Props = {
     onUpdateTask: (id: number, name: string) => void;
 }
 
-export const ListItem = ({ item, onToggleDone, onRemoveTask, onUpdateTask }: Props) => {
+export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, onUpdateTask }) => {
     const [completed, setCompleted] = useState(item.estaCompleta);
 
     const handleSwitchChange = () => {
@@ -27,11 +28,9 @@ export const ListItem = ({ item, onToggleDone, onRemoveTask, onUpdateTask }: Pro
 
     const renderDate = () => {
         if (completed) {
-            return `Concluída em ${format(new Date(item.updatedAt || item.createdAt), 'dd/MM/yyyy HH:mm')}`;
-        } else if (item.updatedAt) {
-            return `Atualizada em ${format(new Date(item.updatedAt), 'dd/MM/yyyy')}`;
+            return `Concluída ${item.updatedAt ? format(new Date(item.updatedAt), 'dd/MM/yyyy') : format(new Date(item.createdAt), 'dd/MM/yyyy')}`;
         } else {
-            return `Criada em ${format(new Date(item.createdAt), 'dd/MM/yyyy')}`;
+            return `Criada ${format(new Date(item.createdAt), 'dd/MM/yyyy')}`;
         }
     };
 
@@ -39,17 +38,18 @@ export const ListItem = ({ item, onToggleDone, onRemoveTask, onUpdateTask }: Pro
 
     return (
         <C.Container done={completed}>
-            <label className="switch-list">
-                <input type="checkbox" checked={completed} onChange={handleSwitchChange} />
-                <span className="slider round"></span>
+            <label className='switch-list'>
+                <input type='checkbox' checked={completed} onChange={handleSwitchChange} />
+                <span className='slider round'></span>
             </label>
             <label className='task' style={{ color: completed ? 'green' : '#ccc' }}>{item.nomedaTarefa}</label>
             <label className="task-importance">{item.importancia}</label>
-            <span className='date-limited' > Data Limite: {formattedLimitedAt}</span>
+            <span className='date-limited'>Data Limite: {formattedLimitedAt}</span>
             <span className="date">{renderDate()}</span>
             
-            <button onClick={handleUpdateTask} type="button" className="btn_editar_tarefa" style={{ fontSize: '11px', padding: '5px 10px', marginRight: '5px' }}>Alterar</button>
-            <button onClick={() => onRemoveTask(item.id)} type="button" className="btn_excluir_tarefa" style={{ fontSize: '11px', padding: '5px 10px', marginRight: '5px' }}>Excluir</button>
+            <button onClick={handleUpdateTask} className="btn_editar_tarefa">Alterar</button>
+            <button onClick={() => onRemoveTask(item.id)} className="btn_excluir_tarefa">Excluir</button>
+            <button onClick={() => tarefasPDF([item])} className="btn-gerar-pdf">Gerar PDF</button>
         </C.Container>
     );
 }
