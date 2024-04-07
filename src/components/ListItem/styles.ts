@@ -89,6 +89,9 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
         font-style: italic;
         font-weight: bold;
         text-align: right;
+        text-decoration: ${done ? 'line-through' : 'initial'};
+
+        
     }
     .btn_editar_tarefa{
         background: #fdc200;
@@ -134,6 +137,7 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
     .date-limited {
         color: ${done ? theme.colors.textgreen : theme.colors.text};
         font-style: italic;
+        text-decoration: ${done ? 'line-through' : 'initial'};
         font-weight: bold;
         width: 150px; /* Largura fixa para a Date-limited */
         margin-left: 10px;

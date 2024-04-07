@@ -3,7 +3,7 @@
     {
       "id": "3c56",
       "nomedaTarefa": "Mandar uma foto pro lucas hoje",
-      "estaCompleta": false,
+      "estaCompleta": true,
       "createdAt": "2024-04-07T00:08:27.626Z",
       "updatedAt": "",
       "limitedAt": "2024-04-06",
@@ -44,6 +44,15 @@
       "updatedAt": "",
       "limitedAt": "4444-04-04",
       "importancia": "Muito importante"
+    },
+    {
+      "id": "b3a1",
+      "nomedaTarefa": "khgkghjkhkhg",
+      "estaCompleta": false,
+      "createdAt": "2024-04-07T06:03:56.915Z",
+      "updatedAt": "",
+      "limitedAt": "232345-04-23",
+      "importancia": "Nao importante"
     }
   ]
 }
