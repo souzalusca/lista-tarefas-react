@@ -38,6 +38,7 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
 
     return (
         <C.Container done={completed}>
+            
             <label className='switch-list'>
                 <input type='checkbox' checked={completed} onChange={handleSwitchChange} />
                 <span className='slider round'></span>
@@ -49,7 +50,7 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
             
             <button onClick={handleUpdateTask} className="btn_editar_tarefa">Alterar</button>
             <button onClick={() => onRemoveTask(item.id)} className="btn_excluir_tarefa">Excluir</button>
-            <button onClick={() => tarefasPDF([item])} className="btn-gerar-pdf">Gerar PDF</button>
+            <button onClick={() => tarefasPDF([item])} className="btn-gerar-pdf">PDF</button>
         </C.Container>
     );
 }

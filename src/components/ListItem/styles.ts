@@ -95,6 +95,8 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
         border: none;
         border-radius: 4px;
         padding: 6px 10px!important;
+        cursor: pointer;
+        margin: 0 0 0 20px;
         
     }
     .btn_excluir_tarefa{
@@ -103,45 +105,52 @@ export const Container = styled.div<ContainerProps>(({ done, theme}) => `
         border-radius: 4px;
         font-size: ;
         color: white;
+        margin: 0 5px;
         padding: 6px 10px!important;
+        cursor: pointer;
         
     }
     .btn-gerar-pdf{
-        background: #fdc200;
-        border: none;
-        border-radius: 4px;
-        padding: 6px 10px!important;
-        font-size: 11px;
-        
+        display: inline-block;
+      padding: 6px 20px;
+      margin: 0 px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      vertical-align: middle;
+      font-size: 0.8em
     }
     .task {
         color: ${theme.colors.text};
         text-decoration: ${done ? 'line-through' : 'initial'};
-        text-align: center;
-        display: flex;
-        flex-grow: 1; /* Ocupa todo o espaço disponível */
-        max-width: calc(100% - 100px); /* Ajuste conforme necessário */
+        width: 200px; /* Largura fixa para a Task */
         overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
+    
     .date-limited {
-        font-size: 11px;
         color: ${done ? theme.colors.textgreen : theme.colors.text};
-        padding: 0px 0px 0px 200px ;
-        margin-right: 50px;
         font-style: italic;
         font-weight: bold;
-        text-align: left;
-        display: flex;
-
+        width: 150px; /* Largura fixa para a Date-limited */
+        margin-left: 10px;
+        font-size: 11px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
     .task-importance {
-        margin-left: auto; /* Defina a posição desejada */
-        top: 0;
-        font-size: 11px;
         color: ${theme.colors.text};
         font-style: italic;
-        font-weight: bold;
-        text-align: center;
+        font-size: 14px;
+        margin: 0 0 0 20px;
+        width: 150px; /* Largura fixa para a Importance */
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
     }
  
 `);

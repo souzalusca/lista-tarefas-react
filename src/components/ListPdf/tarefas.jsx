@@ -34,7 +34,7 @@ function tarefasPDF(tarefas) {
                 widths: ['*', '*', '*', '*'],
                 body: [
                     [
-                        { text: 'Tarefas', style: 'tableHeader', fontSize: 10 },
+                        { text: 'Tarefa', style: 'tableHeader', fontSize: 10 },
                         { text: 'Importância', style: 'tableHeader', fontSize: 10 },
                         { text: 'Data Limite', style: 'tableHeader', fontSize: 10 },
                         { text: 'Data Criada', style: 'tableHeader', fontSize: 10 },
