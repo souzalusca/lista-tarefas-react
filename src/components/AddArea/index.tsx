@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as C from './styles';
-import { FaCircle, FaGgCircle, FaPlusCircle } from 'react-icons/fa';
+import {  FaPlusCircle } from 'react-icons/fa';
 import { Modal } from '../Modal';
 import { Item } from '../../services/api/tarefas/TarefasServices';
 

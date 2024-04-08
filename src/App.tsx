@@ -82,39 +82,42 @@ const App = () => {
       });
   }, []);
 
-  const handleUpdateTask = (id: number, name: string) => {
+  const handleUpdateTask = (id: number, newData: Partial<Item>) => {
     const updatedTaskData: Partial<Item> = {
-      nomedaTarefa: name,
-      updatedAt: new Date().toISOString()
+        nomedaTarefa: newData.nomedaTarefa,
+        updatedAt: new Date().toISOString(),
+        importancia: newData.importancia,
+        limitedAt: newData.limitedAt
+
     };
 
     const taskToUpdate = list.find(item => item.id === id);
     if (!taskToUpdate) {
-      console.error('Tarefa não encontrada para atualização');
-      return;
+        console.error('Tarefa não encontrada para atualização');
+        return;
     }
 
     const updatedTask: Item = { ...taskToUpdate, ...updatedTaskData };
 
     TarefasServices.updateById(id, updatedTask)
-      .then(result => {
-        if (result instanceof ApiException) {
-          alert(result.message);
-          console.error('Erro ao atualizar tarefa:', result.message);
-        } else {
-          setList(list => {
-            const updatedList = list.map(item =>
-              item.id === id ? updatedTask : item
-            );
-            return updatedList;
-          });
-          console.log('Tarefa atualizada com sucesso!');
-        }
-      })
-      .catch(error => {
-        console.error('Erro ao atualizar tarefa:', error);
-      });
-  };
+        .then(result => {
+            if (result instanceof ApiException) {
+                alert(result.message);
+                console.error('Erro ao atualizar tarefa:', result.message);
+            } else {
+                setList(list => {
+                    const updatedList = list.map(item =>
+                        item.id === id ? result : item // Usando o valor retornado pela atualização
+                    );
+                    return updatedList;
+                });
+                console.log('Tarefa atualizada com sucesso!');
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao atualizar tarefa:', error);
+        });
+};
 
   const handleToggleDone = (id: number, done: boolean) => {
     const tarefaToUpdate = list.find(item => item.id === id);

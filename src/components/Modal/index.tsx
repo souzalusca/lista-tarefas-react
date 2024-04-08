@@ -14,7 +14,11 @@ export const Modal = ({ isOpen, onClose, onAddTask }: Props) => {
 
   const handleAddTask = () => {
     if (dueDate.trim() === '') {
-      alert('Data de vencimento não inserida');
+      alert('Insira uma data limite para a conclusão da tarefa');
+      return; // Impede a adição da tarefa se a data não estiver inserida
+    }
+    if (taskName.trim() === '') {
+      alert('Insira um nome para a tarefa');
       return; // Impede a adição da tarefa se a data não estiver inserida
     }
 
