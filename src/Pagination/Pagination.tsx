@@ -1,5 +1,6 @@
 import React from "react";
 import * as C from "../Pagination/pagination.styled"; // Altere o nome do arquivo para corresponder ao caminho real do arquivo de estilos
+
 interface PaginationProps {
   limit: number;
   total: number;
@@ -15,13 +16,33 @@ const Pagination: React.FC<PaginationProps> = ({ limit, total, offset, setOffset
     const pages = Math.ceil(total / limit);
     const first = Math.max(current - MAX_LEFT, 1);
     const maxItems = Math.min(MAX_ITEMS, pages);
-  
+    
+    console.log("Current Page:", current);
+    console.log("Total Pages:", pages);
+    console.log("First Page:", first);
+    console.log("Max Items:", maxItems);
+    
+    function onPageChange(page : number) {
+      setOffset(page - 1);
+    }
     return (
       <C.Container> {/* Use o componente estilizado correto aqui */}
         <ul className="pagination-list">
+          <li>
+            <button onClick={() => {
+              console.log("Previous clicked");
+              onPageChange(current - 1);
+            }} className={current === 1 ? "pagination__item--disabled" : ""} disabled={current === 1}>  
+            
+              Anterior
+            </button>
+          </li>
           {Array.from({ length: maxItems }).map((_, i) => i + first).map((page) => (
             <li key={page}>
-              <button onClick={() => setOffset(page - 1)}
+              <button 
+              onClick={() => {console.log("Page clicked:", page);
+                onPageChange(page);
+              }}
               className={page === current ? "pagination__item--active" : ""}
               >
                 {page}
@@ -33,4 +54,4 @@ const Pagination: React.FC<PaginationProps> = ({ limit, total, offset, setOffset
     );
   };
   
-  export default Pagination;
+export default Pagination;
