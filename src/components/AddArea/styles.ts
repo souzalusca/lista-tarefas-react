@@ -29,5 +29,27 @@ export const Container = styled.div`
     .add-icon {
         color: ${props => props.theme.colors.text};
         font-size: 18px;
+        cursor: pointer;
+    }
+    .pesquisar-tarefa {
+        color: ${props => props.theme.colors.text}; 
+        font-size: 18px;
+        margin: 0 10px;
+        margin: 0 10px;
+        background: ${props => props.theme.colors.background};
+        border: none;
+        border-radius: 5px;
+        padding: 5px;
+        font-size: 16px;
+        transition: 0.3s;
+        margin-left: 400px;
+        
+        &:hover {
+            background-color: ${props => props.theme.colors.primary};
+            color: ${props => props.theme.colors.text};
+            transition: 0.3s;
+
+
+        }
     }
 `;

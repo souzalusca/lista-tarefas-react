@@ -11,9 +11,10 @@ type Props = {
     onToggleDone: (id: number, done: boolean) => void;
     onRemoveTask: (id: number) => void;
     onUpdateTask: (id: number, newData: Item) => void; // Alterado para aceitar um Item
+    searchTerm: string; // Termo de pesquisa para filtrar as tarefas
 };
 
-export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, onUpdateTask }) => {
+export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, onUpdateTask, searchTerm }) => {
     const [completed, setCompleted] = useState(item.estaCompleta);
     const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
@@ -25,7 +26,7 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
         const newValue = !completed;
         setCompleted(newValue);
         onToggleDone(item.id, newValue);
-    }
+    };
 
     const renderDate = () => {
         if (completed) {
@@ -36,10 +37,6 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
             return `Criada ${format(new Date(item.createdAt), 'dd/MM/yyyy')}`;
         }
     };
-    
-    
-    
-    
 
     const formattedLimitedAt = isValid(new Date(item.limitedAt)) ? format(new Date(item.limitedAt), 'dd/MM/yyyy') : '';
 
@@ -59,7 +56,13 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
         }
     };
 
-    return (
+    // Verifica se a tarefa corresponde ao termo de pesquisa
+    const isTaskMatched = () => {
+        return item.nomedaTarefa.toLowerCase().includes(searchTerm.toLowerCase());
+    };
+
+    // Renderiza a tarefa apenas se corresponder ao termo de pesquisa
+    return isTaskMatched() ? (
         <C.Container done={completed}>
             <label className='switch-list'>
                 <input type='checkbox' checked={completed} onChange={handleSwitchChange} />
@@ -69,7 +72,7 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
             <label className="task-importance">{item.importancia}</label>
             <span className='date-limited'>Data Limite: {formattedLimitedAt}</span>
             <span className="date">{renderDate()}</span>
-            
+
             <button
                 onClick={() => setOpenUpdateModal(true)}
                 className="btn_editar_tarefa"
@@ -88,5 +91,5 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
             <button onClick={() => onRemoveTask(item.id)} className="btn_excluir_tarefa">Excluir</button>
             <button onClick={() => tarefasPDF([item])} className="btn-gerar-pdf">PDF</button>
         </C.Container>
-    );
+    ) : null;
 };

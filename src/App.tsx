@@ -1,5 +1,3 @@
-// App.tsx
-
 import React, { useState, useEffect, useCallback } from 'react';
 import * as C from './App.styles';
 import { Item, TarefasServices } from './services/api/tarefas/TarefasServices';
@@ -14,10 +12,14 @@ import { ThemeProvider, DefaultTheme } from 'styled-components';
 import lightTheme from './styles/themes/light';
 import darkTheme from './styles/themes/dark';
 import { usePersistedState } from './components/utils/usePersistedState';
+import Pagination from './Pagination/Pagination';
 
 const App = () => {
-  const [theme, setTheme] = usePersistedState< DefaultTheme>('theme', lightTheme);
+  const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', lightTheme);
   const [list, setList] = useState<Item[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const LIMIT = 5;
+  const [currentPage, setCurrentPage] = useState(0);
 
   const fetchData = async () => {
     try {
@@ -53,21 +55,20 @@ const App = () => {
         limitedAt: dueDate,
         importancia: importance.toString() // Definindo importancia como número
       };
-  
+
       const result = await TarefasServices.create(newTaskData);
-  
+
       if (result instanceof ApiException) {
         alert(result.message);
         console.error('Erro ao criar tarefa:', result.message);
         return;
       }
-  
+
       setList(prevList => [...prevList, result]);
     } catch (error) {
       console.error('Erro ao criar tarefa:', error);
     }
   };
-  
 
   const handleRemoveTask = useCallback((id: number) => {
     TarefasServices.deleteById(id)
@@ -88,7 +89,6 @@ const App = () => {
         updatedAt: new Date().toISOString(),
         importancia: newData.importancia,
         limitedAt: newData.limitedAt
-
     };
 
     const taskToUpdate = list.find(item => item.id === id);
@@ -117,7 +117,7 @@ const App = () => {
         .catch(error => {
             console.error('Erro ao atualizar tarefa:', error);
         });
-};
+  };
 
   const handleToggleDone = (id: number, done: boolean) => {
     const tarefaToUpdate = list.find(item => item.id === id);
@@ -147,6 +147,24 @@ const App = () => {
       });
   };
 
+  const handleFilterTasks = useCallback((searchTerm: string) => {
+    setSearchTerm(searchTerm);
+  }, []);
+
+  // Calcular o total de itens na lista
+  const totalItems = list.length;
+
+  // Calcular o deslocamento com base na página atual
+  const offset = currentPage * LIMIT;
+
+  // Atualizar a lista de tarefas com base no deslocamento
+  const visibleTasks = list.slice(offset, offset + LIMIT);
+
+  // Função para lidar com a alteração de página
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <C.Container>
@@ -161,24 +179,31 @@ const App = () => {
 
           <C.Header>Lista de Tarefas <br /> <br /> </C.Header>
 
-          <AddArea onAddTask={handleAdd} />
+          <AddArea 
+            onAddTask={handleAdd} 
+            tasks={list} // Passando a lista de tarefas como propriedade
+            onFilterTasks={handleFilterTasks} // Passando a função de filtro como propriedade
+          />
 
-          {list.length > 0 && list.map(item => (
+          {visibleTasks.map(item => (
             <ListItem
               key={item.id}
               item={item}
               onToggleDone={handleToggleDone}
               onRemoveTask={handleRemoveTask}
               onUpdateTask={handleUpdateTask}
+              searchTerm={searchTerm} // Passando o termo de pesquisa como propriedade
             />
           ))}
 
-          {list.length === 0 && (
-            <p className="listVazia">Oops, não temos nenhuma tarefa.
-              <br />Adicione alguma tarefa! 😊 </p>
-          )}
-          
         </C.Area>
+
+        <Pagination 
+          limit={LIMIT}
+          total={totalItems}
+          offset={offset}
+          setOffset={handlePageChange} // Use a função de handlePageChange para definir o offset
+        />
       </C.Container>
     </ThemeProvider>
   );
