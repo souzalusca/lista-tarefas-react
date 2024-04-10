@@ -1,5 +1,6 @@
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import moment from 'moment';
 
 function tarefasPDF(tarefas) {
     if (!Array.isArray(tarefas)) {
@@ -22,8 +23,8 @@ function tarefasPDF(tarefas) {
         return [
             { text: tarefa.nomedaTarefa, fontSize: 10 },
             { text: tarefa.importancia, fontSize: 10 },
-            { text: tarefa.limitedAt, fontSize: 10 },
-            { text: tarefa.createdAt, fontSize: 10 },
+            { text: moment(tarefa.limitedAt).format('DD/MM/YYYY'), fontSize: 10 }, // Formatando a data limite
+            { text: moment(tarefa.createdAt).format('DD/MM/YYYY'), fontSize: 10 }, // Formatando a data criada
         ];
     });
 

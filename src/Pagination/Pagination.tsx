@@ -17,10 +17,7 @@ const Pagination: React.FC<PaginationProps> = ({ limit, total, offset, setOffset
     const first = Math.max(current - MAX_LEFT, 1);
     const maxItems = Math.min(MAX_ITEMS, pages);
     
-    console.log("Current Page:", current);
-    console.log("Total Pages:", pages);
-    console.log("First Page:", first);
-    console.log("Max Items:", maxItems);
+  
     
     function onPageChange(page : number) {
       setOffset(page - 1);
@@ -29,10 +26,9 @@ const Pagination: React.FC<PaginationProps> = ({ limit, total, offset, setOffset
       <C.Container> {/* Use o componente estilizado correto aqui */}
         <ul className="pagination-list">
           <li>
-            <button onClick={() => {
-              console.log("Previous clicked");
-              onPageChange(current - 1);
-            }} className={current === 1 ? "pagination__item--disabled" : ""} disabled={current === 1}>  
+            <button 
+            onClick={() => {onPageChange(current - 1);}} 
+            className={current === 1 ? "pagination__item--disabled" : ""} disabled={current === 1}>  
             
               Anterior
             </button>
@@ -48,7 +44,16 @@ const Pagination: React.FC<PaginationProps> = ({ limit, total, offset, setOffset
                 {page}
               </button>
             </li>
+
           ))}
+           <li>
+            <button 
+            onClick={() => {onPageChange(current + 1);}} 
+            className={current === pages ? "pagination__item--disabled" : ""} disabled={current === pages}>  
+            
+              Proximo
+            </button>
+          </li>
         </ul>
       </C.Container>
     );
