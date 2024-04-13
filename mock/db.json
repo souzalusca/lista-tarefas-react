@@ -99,5 +99,106 @@
       "limitedAt": "3412-12-04",
       "importancia": "Importante"
     }
+  ],
+  "cadastrousuario": [
+    {
+      "id": "1306"
+    },
+    {
+      "id": "2e66",
+      "nome": "Jogao",
+      "email": "",
+      "senha": ""
+    },
+    {
+      "id": "a908",
+      "nome": "Jogao",
+      "email": "Normal@gmail.com",
+      "senha": "1265487"
+    },
+    {
+      "id": "c892",
+      "nome": "Jogao",
+      "email": "Normal@gmail.com",
+      "senha": "1265487"
+    },
+    {
+      "id": "a5cc",
+      "nome": "Jordan wuick",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "1312312"
+    },
+    {
+      "id": "22b8",
+      "nome": "Jordan wuick",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "131213"
+    },
+    {
+      "id": "7f8e",
+      "nome": "Jordan wuick",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "133121"
+    },
+    {
+      "id": "2e17",
+      "nome": "Lucas",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "131231"
+    },
+    {
+      "id": "c8e1",
+      "nome": "Jordan wuick",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "12154"
+    },
+    {
+      "id": "e9b0",
+      "nome": "Jordan wuick",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "13421"
+    },
+    {
+      "id": "9c2e",
+      "nome": "Jordan wuick",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "131212"
+    },
+    {
+      "id": "3627",
+      "nome": "qrwwqr",
+      "email": "Cardosocris2010@hotmail.com",
+      "senha": "qwrqwe"
+    },
+    {
+      "id": "e451",
+      "nome": "qwerrqw",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "qwerqwq"
+    },
+    {
+      "id": "dd9b",
+      "nome": "qewqr",
+      "email": "kaka_nikaido_@hotmail.com",
+      "senha": "eqwrqweq"
+    },
+    {
+      "id": "9cdd",
+      "nome": "Lucas",
+      "email": "kaka_nikaido_@gmail.com",
+      "senha": "321312312"
+    },
+    {
+      "id": "b921",
+      "nome": "Lucas",
+      "email": "wate1214@gmail.com",
+      "senha": "1331231"
+    },
+    {
+      "id": "0a10",
+      "nome": "Jordan wuick",
+      "email": "wate21214@gmail.com",
+      "senha": "13131423"
+    }
   ]
 }

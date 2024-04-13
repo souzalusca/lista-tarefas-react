@@ -33,7 +33,13 @@ const Navbar: React.FC<Props> = ({ toggleTheme }) => {
           <NavbarLink href="#">Pagina inicial</NavbarLink>
         </NavbarItem>
         <NavbarItem>
-          <NavbarLink href="/create-login">Atualizar status</NavbarLink>
+          <NavbarLink href="/create-login">Registre-se</NavbarLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavbarLink href="/login">Entrar</NavbarLink>
+        </NavbarItem>
+        <NavbarItem>
+          <NavbarLink href="/create-login">Deslogar</NavbarLink>
         </NavbarItem>
         {/* Adicione mais itens conforme necessário */}
       </NavbarList>
