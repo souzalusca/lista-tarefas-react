@@ -4,14 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Importando BrowserRouter, Routes e Route
-import NovaPagina from './NovaPagina';
+import CreateLogin from './components/CreateLogin';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Routes> {/* Use Routes para envolver suas rotas */}
         <Route path="/" element={<App />} />
-        <Route path="/nova-pagina" element={<NovaPagina />} />
+        <Route path="/create-login" element={<CreateLogin />} />
       </Routes>
     </Router>
   </React.StrictMode>,
