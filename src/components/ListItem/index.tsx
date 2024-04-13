@@ -77,7 +77,7 @@ export const ListItem: React.FC<Props> = ({ item, onToggleDone, onRemoveTask, on
                 onClick={() => setOpenUpdateModal(true)}
                 className="btn_editar_tarefa"
             >
-                Alterar
+                Editar
             </button>
             {openUpdateModal && (
                 <Modal
