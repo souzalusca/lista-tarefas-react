@@ -81,6 +81,35 @@ const getUserByEmail = async (email: string): Promise<Registro | null> => {
         return null;
     }
 };
+const getUserBySenha = async (senha: string): Promise<Registro | null> => {
+    try {
+        const { data } = await Api().get(`/cadastrousuario?senha=${senha}`);
+        // Retorna o primeiro usuário encontrado ou null se nenhum for encontrado
+        return data.length > 0 ? data[0] : null;
+    } catch (error) {
+        console.error('Erro ao buscar usuário pela senha:', error);
+        return null;
+    }
+};
+const login = async (email: string, senha: string): Promise<Registro | ApiException> => {
+    try {
+        // Busca o usuário pelo email
+        const user = await getUserByEmail(email);
+
+        // Verifica se o usuário foi encontrado e se a senha corresponde
+        if (user && user.senha === senha) {
+            // Se corresponder, retorna o usuário
+            return user;
+        } else {
+            // Se não corresponder, lança uma exceção com a mensagem de erro
+            throw new ApiException('E-mail ou senha incorretos.');
+        }
+    } catch (error) {
+        // Se ocorrer um erro durante a busca do usuário, retorna uma ApiException com a mensagem de erro
+        return new ApiException((error as Error).message || 'Erro ao fazer login');
+    }
+};
+
 
 
 
@@ -91,5 +120,7 @@ export const TarefasServices = {
     updateById,
     deleteById,
     cadastrousuario,
-    getUserByEmail
+    getUserByEmail,
+    getUserBySenha,
+    login
 };

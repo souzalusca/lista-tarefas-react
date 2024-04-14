@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 
-
-
 // Exportações adicionais, se houver
-export const NavbarContainer = styled.nav`
-  
+export const Container = styled.nav`
   padding: 10px; /* Espaçamento interno */
   margin-bottom: 50px;
   margin-top: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between ;
-  
+  justify-content: space-between;
 `;
 
 export const NavbarList = styled.ul`
@@ -26,7 +22,8 @@ export const NavbarItem = styled.li`
 `;
 
 export const NavbarLink = styled.a`
-  color: ${props => props.theme.colors.text}; /* Use a cor de texto do tema */
+  
+  color: blue;
   text-decoration: none; /* Remova o sublinhado padrão */
 
   &:hover {

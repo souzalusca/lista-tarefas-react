@@ -14,12 +14,14 @@ import darkTheme from './styles/themes/dark';
 import { usePersistedState } from './components/utils/usePersistedState';
 import Pagination from './Pagination/Pagination';
 
-const App = () => {
+
+const App = ( ) => {
   const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', lightTheme);
   const [list, setList] = useState<Item[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const LIMIT = 5;
   const [currentPage, setCurrentPage] = useState(0);
+  const [loggedInUserName, setLoggedInUserName] = useState('');
 
   const fetchData = async () => {
     try {
@@ -40,6 +42,20 @@ const App = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // Recuperar o nome de usuário da sessionStorage ao carregar a página
+    const storedLoggedInUserName = sessionStorage.getItem('loggedInUserName');
+    if (storedLoggedInUserName) {
+      setLoggedInUserName(storedLoggedInUserName);
+    }
+  }, []);
+  const handleLogout = () => {
+    // Limpar os dados do usuário da sessionStorage
+    sessionStorage.removeItem('loggedInUserName');
+    // Redirecionar o usuário para a página de login ou inicial
+    window.location.href = '/login'; // ou '/home' ou qualquer outro URL
+  };
 
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
@@ -164,14 +180,22 @@ const App = () => {
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
+  
 
   return (
-    <ThemeProvider theme={theme}>
+
+  <ThemeProvider theme={theme}>
       <C.Container>
         <C.Area>
           <Tempo />
           <div>
-            <Navbar toggleTheme={toggleTheme}/>
+          <Navbar 
+          toggleTheme={toggleTheme}
+          onLogout={handleLogout} // Deve ser 'onLogout' em vez de 'OnLogout'
+          loggedInUserName={loggedInUserName}
+        />
+
+
             <Routes>
               <Route path="/nova-pagina" element={<NovaPagina />} />
             </Routes>

@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import * as C from "./styles";
 import { TarefasServices } from "../../services/api/tarefas/TarefasServices";
 import { ApiException } from "../../services/api/ApiException";
+import { useNavigate } from "react-router-dom"; // Importe useNavigate
 
 const CreateLogin: React.FC = () => {
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate(); // Use useNavigate para navegação programática
 
     const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -37,7 +39,9 @@ const CreateLogin: React.FC = () => {
                     setUserName("");
                     setUserEmail("");
                     setUserPassword("");
-                    console.log('Usuário criado com sucesso');
+                    setErrorMessage('Usuário criado com sucesso.');
+                    // Redirecionar para outra página após criar o usuário
+                    navigate("/");
                 } else {
                     setErrorMessage("Erro ao criar usuário. Por favor, tente novamente.");
                 }
@@ -47,7 +51,6 @@ const CreateLogin: React.FC = () => {
             setErrorMessage("Erro ao criar usuário. Por favor, tente novamente.");
         }
     };
-    
 
     return ( 
         <div className="create-login">

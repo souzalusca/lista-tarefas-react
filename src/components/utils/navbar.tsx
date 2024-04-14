@@ -1,15 +1,24 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { NavbarContainer, NavbarList, NavbarItem, NavbarLink } from './navbar.styled';
+import * as C from './navbar.styled';
+import {  NavbarList, NavbarItem, NavbarLink } from './navbar.styled';
 import { ThemeContext } from 'styled-components';
 
 interface Props {
   toggleTheme(): void;
+  loggedInUserName: string;
+  onLogout(): void; // Adicione a propriedade onLogout à interface Props
 }
 
-const Navbar: React.FC<Props> = ({ toggleTheme }) => {
+const Navbar: React.FC<Props> = ({ toggleTheme, loggedInUserName, onLogout }) => {
   const theme = useContext(ThemeContext); // Obtém o tema do contexto
   const [icon, setIcon] = useState<string>(""); // Estado para o ícone
 
+  const handleLogout = () => {
+    // Limpar os dados do usuário da sessionStorage
+    sessionStorage.removeItem('loggedInUserName');
+    // Chamar a função de logout
+    onLogout();
+  };
   // Função para alternar entre os temas light e dark
   const handleToggleTheme = () => {
     toggleTheme(); // Chama a função toggleTheme para alternar entre os temas
@@ -19,18 +28,16 @@ const Navbar: React.FC<Props> = ({ toggleTheme }) => {
   useEffect(() => {
     if (theme?.title === 'light') {
       setIcon(" 🌛"); // Define o ícone do Sol se o tema for light
-      console.log("Sol");
     } else {
       setIcon("☀️"); // Define o ícone da Lua se o tema for dark
-      console.log("Lua");
     }
   }, [theme]); // Executa sempre que o tema mudar
 
   return (
-    <NavbarContainer>
+    <C.Container>
       <NavbarList>
         <NavbarItem>
-          <NavbarLink href="#">Pagina inicial</NavbarLink>
+          <NavbarLink href="/">Pagina inicial</NavbarLink>
         </NavbarItem>
         <NavbarItem>
           <NavbarLink href="/create-login">Registre-se</NavbarLink>
@@ -39,19 +46,19 @@ const Navbar: React.FC<Props> = ({ toggleTheme }) => {
           <NavbarLink href="/login">Entrar</NavbarLink>
         </NavbarItem>
         <NavbarItem>
-          <NavbarLink href="/create-login">Deslogar</NavbarLink>
+          <NavbarLink onClick={handleLogout}>Deslogar</NavbarLink>
         </NavbarItem>
-        {/* Adicione mais itens conforme necessário */}
+        <NavbarItem>
+        <div className="logged-in-user">Bem-vindo, {loggedInUserName}</div>
+        </NavbarItem>
       </NavbarList>
       {/* Renderiza o ícone do Moon ou Sun com base no tema atual */}
       <NavbarItem>
-        <NavbarLink style={{ fontSize: '24px', fontWeight: 'normal', cursor: 'pointer', textDecoration: 'none'  }} onClick={handleToggleTheme}>
-            {icon}
-          </NavbarLink>
-          
-        
+        <NavbarLink style={{ fontSize: '24px', fontWeight: 'normal', cursor: 'pointer', textDecoration: 'none' }} onClick={handleToggleTheme}>
+          {icon}
+        </NavbarLink>
       </NavbarItem>
-    </NavbarContainer>
+    </C.Container>
   );
 };
 
