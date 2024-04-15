@@ -3,13 +3,20 @@ import * as C from "./styles";
 import { TarefasServices } from "../../services/api/tarefas/TarefasServices";
 import { ApiException } from "../../services/api/ApiException";
 import { useNavigate } from "react-router-dom"; // Importe useNavigate
+import Navbar from "../utils/navbar";
+import lightTheme from "../../styles/themes/light";
+import darkTheme from '../../styles/themes/dark';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
+import { usePersistedState } from "../utils/usePersistedState";
 
 const CreateLogin: React.FC = () => {
     const [userName, setUserName] = useState("");
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [loggedInUserName, setLoggedInUserName] = useState("");
     const navigate = useNavigate(); // Use useNavigate para navegação programática
+    const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', lightTheme);
 
     const handleUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUserName(event.target.value);
@@ -52,8 +59,16 @@ const CreateLogin: React.FC = () => {
         }
     };
 
+      // Função para alternar entre os temas
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
+  };
+
+
     return ( 
+        <ThemeProvider theme={theme}>
         <div className="create-login">
+             <Navbar toggleTheme={toggleTheme} loggedInUserName={loggedInUserName} onLogout={() => {}} />
             <C.Container>
                 <div>
                     <h1 className="title">Criar Cadastro</h1>
@@ -75,6 +90,7 @@ const CreateLogin: React.FC = () => {
                 </div>
             </C.Container>
         </div>
+        </ThemeProvider>
     );
 };
 

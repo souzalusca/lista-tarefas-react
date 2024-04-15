@@ -3,6 +3,10 @@ import * as C from "./styles";
 import { ApiException } from "../../services/api/ApiException";
 import { TarefasServices } from "../../services/api/tarefas/TarefasServices";
 import Navbar from "../utils/navbar";
+import lightTheme from "../../styles/themes/light";
+import darkTheme from '../../styles/themes/dark';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
+import { usePersistedState } from "../utils/usePersistedState";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +15,9 @@ const Login: React.FC = () => {
   });
 
   const [loggedInUserName, setLoggedInUserName] = useState("");
+  const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', lightTheme);
 
   useEffect(() => {
-    // Recuperar o nome de usuário do sessionStorage ao carregar a página
     const storedLoggedInUserName = sessionStorage.getItem("loggedInUserName");
     if (storedLoggedInUserName) {
       setLoggedInUserName(storedLoggedInUserName);
@@ -21,7 +25,7 @@ const Login: React.FC = () => {
   }, []);
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Evitar o comportamento padrão de submissão do formulário
+    event.preventDefault();
     if (formData.email === "" || formData.senha === "") {
       alert("Preencha todos os campos");
     } else {
@@ -31,9 +35,7 @@ const Login: React.FC = () => {
           alert(result.message);
           console.error('Erro ao fazer login:', result.message);
         } else {
-          // Atualiza o estado com o nome de usuário após o login bem-sucedido
           setLoggedInUserName(result.nome);
-          // Armazena o nome de usuário na sessionStorage
           sessionStorage.setItem("loggedInUserName", result.nome);
           alert("Login realizado com sucesso");
           window.location.href = "/";
@@ -45,52 +47,53 @@ const Login: React.FC = () => {
     }     
   };
 
-  // Função para alternar entre os temas
   const toggleTheme = () => {
-    // Lógica para alternar entre os temas
+    setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
   };
 
   return ( 
-    <div>
-      <Navbar toggleTheme={toggleTheme} loggedInUserName={loggedInUserName} onLogout={() => {}} />
-      <div className="create-login">
-        <C.Container>
-          <div>
-            <h1 className="title">Login</h1>
-            <form className="form" onSubmit={handleLogin}>
-              <div className="form-inputs">
-                <label htmlFor="email">E-mail</label>
-                <input 
-                  type="email"
-                  id="email" 
-                  name="email" 
-                  required 
-                  placeholder="Digite seu e-mail" 
-                  value={formData.email} 
-                  onChange={ e => setFormData({ ...formData, email: e.target.value })} 
-                />
+    <ThemeProvider theme={theme}> {/* Adicione o ThemeProvider em torno do conteúdo da página */}
+      <div>
+        <Navbar toggleTheme={toggleTheme} loggedInUserName={loggedInUserName} onLogout={() => {}} />
+        <div className="create-login">
+          <C.Container>
+            <div>
+              <h1 className="title">Login</h1>
+              <form className="form" onSubmit={handleLogin}>
+                <div className="form-inputs">
+                  <label htmlFor="email">E-mail</label>
+                  <input 
+                    type="email"
+                    id="email" 
+                    name="email" 
+                    required 
+                    placeholder="Digite seu e-mail" 
+                    value={formData.email} 
+                    onChange={ e => setFormData({ ...formData, email: e.target.value })} 
+                  />
 
-                <label htmlFor="password">Senha</label>
-                <input 
-                  type="password" 
-                  id="password" 
-                  name="password" 
-                  required 
-                  placeholder="Digite sua senha" 
-                  value={formData.senha} 
-                  onChange={ e => setFormData({ ...formData, senha: e.target.value })}
-                />
-                <p>Não tem uma conta ? <a href="./create-login">clique aqui</a></p>
-                <div>
-                  <button type="submit" className="button-create">Entrar</button>
-                  <button type="button" className="button-cancel">Cancelar</button>
+                  <label htmlFor="password">Senha</label>
+                  <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    required 
+                    placeholder="Digite sua senha" 
+                    value={formData.senha} 
+                    onChange={ e => setFormData({ ...formData, senha: e.target.value })}
+                  />
+                  <p>Não tem uma conta ? <a href="./create-login">clique aqui</a></p>
+                  <div>
+                    <button type="submit" className="button-create">Entrar</button>
+                    <button type="button" className="button-cancel">Cancelar</button>
+                  </div>
                 </div>
-              </div>
-            </form>
-          </div>
-        </C.Container>
+              </form>
+            </div>
+          </C.Container>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 

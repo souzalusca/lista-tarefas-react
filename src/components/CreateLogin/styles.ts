@@ -13,7 +13,7 @@ export const Container = styled.div`
     
     .title {
         margin-bottom: 30px;
-        color: black;
+        color: ${props => props.theme.colors.primary};
         font-weight: bold;
         font-size: 30px;
         text-align: center;

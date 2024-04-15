@@ -1,3 +1,4 @@
+// App.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import * as C from './App.styles';
 import { Item, TarefasServices } from './services/api/tarefas/TarefasServices';
@@ -14,8 +15,11 @@ import darkTheme from './styles/themes/dark';
 import { usePersistedState } from './components/utils/usePersistedState';
 import Pagination from './Pagination/Pagination';
 
+interface AppProps {
+  toggleTheme: () => void;
+}
 
-const App = ( ) => {
+const App: React.FC<AppProps> = ({ toggleTheme }) => {
   const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', lightTheme);
   const [list, setList] = useState<Item[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,20 +48,18 @@ const App = ( ) => {
   }, []);
 
   useEffect(() => {
-    // Recuperar o nome de usuário da sessionStorage ao carregar a página
     const storedLoggedInUserName = sessionStorage.getItem('loggedInUserName');
     if (storedLoggedInUserName) {
       setLoggedInUserName(storedLoggedInUserName);
     }
   }, []);
+
   const handleLogout = () => {
-    // Limpar os dados do usuário da sessionStorage
     sessionStorage.removeItem('loggedInUserName');
-    // Redirecionar o usuário para a página de login ou inicial
-    window.location.href = '/login'; // ou '/home' ou qualquer outro URL
+    window.location.href = '/login';
   };
 
-  const toggleTheme = () => {
+  const toggleThemeLocal = () => {
     setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
   };
 
@@ -69,7 +71,7 @@ const App = ( ) => {
         createdAt: new Date().toISOString(),
         updatedAt: '',
         limitedAt: dueDate,
-        importancia: importance.toString() // Definindo importancia como número
+        importancia: importance.toString()
       };
 
       const result = await TarefasServices.create(newTaskData);
@@ -101,38 +103,38 @@ const App = ( ) => {
 
   const handleUpdateTask = (id: number, newData: Partial<Item>) => {
     const updatedTaskData: Partial<Item> = {
-        nomedaTarefa: newData.nomedaTarefa,
-        updatedAt: new Date().toISOString(),
-        importancia: newData.importancia,
-        limitedAt: newData.limitedAt
+      nomedaTarefa: newData.nomedaTarefa,
+      updatedAt: new Date().toISOString(),
+      importancia: newData.importancia,
+      limitedAt: newData.limitedAt
     };
 
     const taskToUpdate = list.find(item => item.id === id);
     if (!taskToUpdate) {
-        console.error('Tarefa não encontrada para atualização');
-        return;
+      console.error('Tarefa não encontrada para atualização');
+      return;
     }
 
     const updatedTask: Item = { ...taskToUpdate, ...updatedTaskData };
 
     TarefasServices.updateById(id, updatedTask)
-        .then(result => {
-            if (result instanceof ApiException) {
-                alert(result.message);
-                console.error('Erro ao atualizar tarefa:', result.message);
-            } else {
-                setList(list => {
-                    const updatedList = list.map(item =>
-                        item.id === id ? result : item // Usando o valor retornado pela atualização
-                    );
-                    return updatedList;
-                });
-                console.log('Tarefa atualizada com sucesso!');
-            }
-        })
-        .catch(error => {
-            console.error('Erro ao atualizar tarefa:', error);
-        });
+      .then(result => {
+        if (result instanceof ApiException) {
+          alert(result.message);
+          console.error('Erro ao atualizar tarefa:', result.message);
+        } else {
+          setList(list => {
+            const updatedList = list.map(item =>
+              item.id === id ? result : item
+            );
+            return updatedList;
+          });
+          console.log('Tarefa atualizada com sucesso!');
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar tarefa:', error);
+      });
   };
 
   const handleToggleDone = (id: number, done: boolean) => {
@@ -167,48 +169,37 @@ const App = ( ) => {
     setSearchTerm(searchTerm);
   }, []);
 
-  // Calcular o total de itens na lista
   const totalItems = list.length;
-
-  // Calcular o deslocamento com base na página atual
   const offset = currentPage * LIMIT;
-
-  // Atualizar a lista de tarefas com base no deslocamento
   const visibleTasks = list.slice(offset, offset + LIMIT);
 
-  // Função para lidar com a alteração de página
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
   
-
   return (
-
-  <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <C.Container>
+      <Navbar 
+              toggleTheme={toggleThemeLocal}
+              onLogout={handleLogout}
+              loggedInUserName={loggedInUserName}
+            />
+             <Tempo />
         <C.Area>
-          <Tempo />
           <div>
-          <Navbar 
-          toggleTheme={toggleTheme}
-          onLogout={handleLogout} // Deve ser 'onLogout' em vez de 'OnLogout'
-          loggedInUserName={loggedInUserName}
-        />
-
-
+          
             <Routes>
               <Route path="/nova-pagina" element={<NovaPagina />} />
             </Routes>
           </div>
-
           <C.Header>Lista de Tarefas <br /> <br /> </C.Header>
-
+          
           <AddArea 
-            onAddTask={handleAdd} 
-            tasks={list} // Passando a lista de tarefas como propriedade
-            onFilterTasks={handleFilterTasks} // Passando a função de filtro como propriedade
+            onAddTask={handleAdd}
+            tasks={list}
+            onFilterTasks={handleFilterTasks}
           />
-
           {visibleTasks.map(item => (
             <ListItem
               key={item.id}
@@ -216,17 +207,15 @@ const App = ( ) => {
               onToggleDone={handleToggleDone}
               onRemoveTask={handleRemoveTask}
               onUpdateTask={handleUpdateTask}
-              searchTerm={searchTerm} // Passando o termo de pesquisa como propriedade
+              searchTerm={searchTerm}
             />
           ))}
-
         </C.Area>
-
         <Pagination 
           limit={LIMIT}
           total={totalItems}
           offset={offset}
-          setOffset={handlePageChange} // Use a função de handlePageChange para definir o offset
+          setOffset={handlePageChange}
         />
       </C.Container>
     </ThemeProvider>

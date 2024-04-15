@@ -27,7 +27,7 @@ NavBar{
   background-color: #20212C;
   border-radius: 10px;
   padding: 10px;
-  margin: 20px 0;
+  margin: 0px 0;
   display: inline-block;
 }
   

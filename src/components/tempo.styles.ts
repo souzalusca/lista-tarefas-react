@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 export const TempoContainer = styled.div`
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 50px;
+    right: 0px;
     color: grey;
     padding: 10px;
     border-radius: 5px;

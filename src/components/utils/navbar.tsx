@@ -1,63 +1,75 @@
+// Navbar.tsx
 import React, { useContext, useState, useEffect } from 'react';
 import * as C from './navbar.styled';
-import {  NavbarList, NavbarItem, NavbarLink } from './navbar.styled';
+import { NavbarList, NavbarItem, NavbarLink } from './navbar.styled';
 import { ThemeContext } from 'styled-components';
+import lightTheme from '../../styles/themes/light';
+import darkTheme from '../../styles/themes/dark';
+import { ThemeProvider, DefaultTheme } from 'styled-components';
+import { usePersistedState } from "../utils/usePersistedState";
 
 interface Props {
   toggleTheme(): void;
   loggedInUserName: string;
-  onLogout(): void; // Adicione a propriedade onLogout à interface Props
+  onLogout(): void;
 }
 
 const Navbar: React.FC<Props> = ({ toggleTheme, loggedInUserName, onLogout }) => {
-  const theme = useContext(ThemeContext); // Obtém o tema do contexto
-  const [icon, setIcon] = useState<string>(""); // Estado para o ícone
+  const [icon, setIcon] = useState<string>("");
+  const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', lightTheme);
 
   const handleLogout = () => {
-    // Limpar os dados do usuário da sessionStorage
     sessionStorage.removeItem('loggedInUserName');
-    // Chamar a função de logout
     onLogout();
   };
-  // Função para alternar entre os temas light e dark
+
   const handleToggleTheme = () => {
-    toggleTheme(); // Chama a função toggleTheme para alternar entre os temas
+    setTheme(prevTheme => prevTheme === lightTheme ? darkTheme : lightTheme);
+    toggleTheme(); // Chama a função toggleTheme do App para garantir a atualização instantânea do tema
   };
 
-  // Atualiza o ícone com base no tema sempre que o tema mudar
   useEffect(() => {
     if (theme?.title === 'light') {
-      setIcon(" 🌛"); // Define o ícone do Sol se o tema for light
+      setIcon(" 🌛");
     } else {
-      setIcon("☀️"); // Define o ícone da Lua se o tema for dark
+      setIcon("☀️");
     }
-  }, [theme]); // Executa sempre que o tema mudar
+  }, [theme]);
 
   return (
     <C.Container>
-      <NavbarList>
+      <ThemeProvider theme={theme}>
+        <NavbarList>
+          <NavbarItem>
+            <NavbarLink href="/">Pagina inicial</NavbarLink>
+          </NavbarItem>
+          {loggedInUserName === '' && (
+            <React.Fragment>
+              <NavbarItem>
+                <NavbarLink href="/create-login">Registre-se</NavbarLink>
+              </NavbarItem>
+              <NavbarItem>
+                <NavbarLink href="/login">Entrar</NavbarLink>
+              </NavbarItem>
+            </React.Fragment>
+          )}
+          {loggedInUserName !== '' && (
+            <React.Fragment>
+              <NavbarItem>
+                <NavbarLink onClick={handleLogout}>Deslogar</NavbarLink>
+              </NavbarItem>
+              <NavbarItem>
+                <div className="logged-in-user">Bem-vindo!  {loggedInUserName}</div>
+              </NavbarItem>
+            </React.Fragment>
+          )}
+        </NavbarList>
         <NavbarItem>
-          <NavbarLink href="/">Pagina inicial</NavbarLink>
+          <NavbarLink className='theme' style={{ fontSize: '24px', fontWeight: 'normal', cursor: 'pointer', textDecoration: 'none' }} onClick={handleToggleTheme}>
+            {icon}
+          </NavbarLink>
         </NavbarItem>
-        <NavbarItem>
-          <NavbarLink href="/create-login">Registre-se</NavbarLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavbarLink href="/login">Entrar</NavbarLink>
-        </NavbarItem>
-        <NavbarItem>
-          <NavbarLink onClick={handleLogout}>Deslogar</NavbarLink>
-        </NavbarItem>
-        <NavbarItem>
-        <div className="logged-in-user">Bem-vindo, {loggedInUserName}</div>
-        </NavbarItem>
-      </NavbarList>
-      {/* Renderiza o ícone do Moon ou Sun com base no tema atual */}
-      <NavbarItem>
-        <NavbarLink style={{ fontSize: '24px', fontWeight: 'normal', cursor: 'pointer', textDecoration: 'none' }} onClick={handleToggleTheme}>
-          {icon}
-        </NavbarLink>
-      </NavbarItem>
+      </ThemeProvider>
     </C.Container>
   );
 };
